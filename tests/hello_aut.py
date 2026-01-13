@@ -26,4 +26,4 @@ class AutTest(unittest.TestCase):
         self.assertIn(expected_result, actual_result.text)
 
     if __name__ == '__main__':
-        unittest.main(argv=['first-arg-is-ignored'].verbosity=2,warnings='ignore')
+        unittest.main(argv=['first-arg-is-ignored'], verbosity=2, warnings='ignore')
