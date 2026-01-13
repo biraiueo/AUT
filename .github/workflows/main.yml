@@ -65,10 +65,10 @@ jobs:
       - name: Run test
         run: python tests/hello_aut.py ${{ env.URL }} ${{ matrix.browser }}
 
-      - name : 'Upload Artifact'
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Screenshot
+          name: Screenshot-${{ matrix.browser }}
           path: screenshot.png
 
       - name: stop docker
