@@ -27,8 +27,8 @@ class AutTest(unittest.TestCase):
         url = sys.argv[1] if len(sys.argv) > 1 else "http://localhost"
 
         self.browser.get(url)
-
-        expected_result = "Welcome back, Guest!"
+        self.browser.save_screenshot("screenshot.png")
+        expected_result = "Welcome back, Biraaaa!"
         actual_result = self.browser.find_element(By.TAG_NAME, "p")
 
         self.assertIn(expected_result, actual_result.text)
