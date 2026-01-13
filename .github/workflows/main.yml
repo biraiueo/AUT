@@ -10,6 +10,9 @@ jobs:
     name: Functional Test
     permissions: write-all
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [firefox, chrome, edge]
 
     steps:
       - name: Checkout the repo
@@ -33,7 +36,20 @@ jobs:
         run: curl ${{ env.URL }}
 
       - name: Selenium Preparation
-        run: docker run --network=isolated -d -p 4444:4444 -p 7900:7900 -v /dev/shm:/dev/shm --name firefox-standalone selenium/standalone-firefox:latest
+        run: |
+          if [ "${{ matrix.browser }}" = "firefox" ]; then
+            docker run --network=isolated -d -p 4444:4444 -p 7900:7900 \
+            -v /dev/shm:/dev/shm --name selenium \
+            selenium/standalone-firefox:latest
+          elif [ "${{ matrix.browser }}" = "chrome" ]; then
+            docker run --network=isolated -d -p 4444:4444 -p 7900:7900 \
+            -v /dev/shm:/dev/shm --name selenium \
+            selenium/standalone-chrome:latest
+          else
+            docker run --network=isolated -d -p 4444:4444 -p 7900:7900 \
+            -v /dev/shm:/dev/shm --name selenium \
+            selenium/standalone-edge:latest
+          fi
 
       - name: Wait for Selenium Hub
         run: sh wait.sh
