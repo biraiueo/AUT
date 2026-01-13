@@ -5,29 +5,34 @@ from selenium.webdriver.common.by import By
 class AutTest(unittest.TestCase):
 
     def setUp(self):
-        options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
-        options.add_argument('--ignore-certificate-errors')
+        browser = sys.argv[2] if len(sys.argv) > 2 else "firefox"
+
+        if browser == "chrome":
+            options = webdriver.ChromeOptions()
+        elif browser == "edge":
+            options = webdriver.EdgeOptions()
+        else:
+            options = webdriver.FirefoxOptions()
+
+        options.add_argument("--headless")
+        options.add_argument("--ignore-certificate-errors")
 
         self.browser = webdriver.Remote(
-            command_executor='http://localhost:4444',
+            command_executor="http://localhost:4444",
             options=options
         )
         self.addCleanup(self.browser.quit)
 
     def test_homepage(self):
-        if len(sys.argv) > 1:
-            url = sys.argv[1]
-        else:
-            url = "http://localhost"
+        url = sys.argv[1] if len(sys.argv) > 1 else "http://localhost"
 
         self.browser.get(url)
 
         expected_result = "Welcome back, Guest!"
-        actual_result = self.browser.find_element(By.TAG_NAME, 'p')
+        actual_result = self.browser.find_element(By.TAG_NAME, "p")
 
         self.assertIn(expected_result, actual_result.text)
 
 
-if __name__ == '__main__':
-    unittest.main(argv=['first-arg-is-ignored'], verbosity=2, warnings='ignore')
+if __name__ == "__main__":
+    unittest.main(argv=["first-arg-is-ignored"], verbosity=2, warnings="ignore")
