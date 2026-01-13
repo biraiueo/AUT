@@ -9,8 +9,12 @@ class AutTest(unittest.TestCase):
 
         if browser == "chrome":
             options = webdriver.ChromeOptions()
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
         elif browser == "edge":
             options = webdriver.EdgeOptions()
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
         else:
             options = webdriver.FirefoxOptions()
 
@@ -22,6 +26,7 @@ class AutTest(unittest.TestCase):
             options=options
         )
         self.addCleanup(self.browser.quit)
+
 
     def test_homepage(self):
         url = sys.argv[1] if len(sys.argv) > 1 else "http://localhost"
