@@ -5,14 +5,12 @@ from selenium.webdriver.common.by import By
 class AutTest(unittest.TestCase):
 
     def setUp(self):
-        options = webdriver.FirefoxOptions()
-        options.add_argument('--ignore-ssl-errors=yes')
-        options.add_argument('--ignore-certificate-errors')
+        options = webdriver.ChromeOptions()
         options.add_argument('--headless')
+        options.add_argument('--ignore-certificate-errors')
 
-        server = 'http://localhost:4444'
         self.browser = webdriver.Remote(
-            command_executor=server,
+            command_executor='http://localhost:4444',
             options=options
         )
         self.addCleanup(self.browser.quit)
@@ -24,7 +22,7 @@ class AutTest(unittest.TestCase):
             url = "http://localhost"
 
         self.browser.get(url)
-        self.browser.save_screenshot('screenshot.png')
+
         expected_result = "Welcome back, Guest!"
         actual_result = self.browser.find_element(By.TAG_NAME, 'p')
 
